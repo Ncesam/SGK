@@ -16,7 +16,7 @@ val LocalAppTypography = staticCompositionLocalOf<AppTypographySchema> {
 
 
 @Composable
-fun AppTheme(
+fun AppThemeProvider(
     content: @Composable () -> Unit
 ) {
     val typography = remember { appTypography }
