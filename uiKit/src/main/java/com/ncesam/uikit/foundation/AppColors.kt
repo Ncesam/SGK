@@ -17,7 +17,9 @@ data class AppColorScheme(
     val placeholder: Color,
     val description: Color,
     val cardStroke: Color,
-    val caption: Color
+    val caption: Color,
+    val icons: Color,
+    val divider: Color,
 )
 
 private fun hex(hex: String): Color = Color(hex.toColorInt())
@@ -26,15 +28,17 @@ val LightColorPalette = AppColorScheme(
     accent = hex("#2074F2"),
     accentInactive = hex("#C5D2FF"),
     black = hex("#2D2C2C"),
-    white = hex("#F7F7F7"),
+    white = hex("#FFFFFF"),
     error = hex("#FF4646"),
     success = hex("#00B412"),
-    inputBackground = hex("#F7F7FA"),
+    inputBackground = hex("#F5F5F9"),
     inputStroke = hex("#E6E6E6"),
     inputIcons = hex("#BFC7D1"),
     placeholder = hex("#98989A"),
     description = hex("#8787A1"),
     cardStroke = hex("#F2F2F2"),
-    caption = Color.Transparent
+    caption = hex("#939396"),
+    icons = hex("#B8C1CC"),
+    divider = hex("#F4F4F4")
 )
 
