@@ -76,15 +76,14 @@ fun AppCounter(
     }
 }
 
-private fun formatRussian(value: Int): String {
+fun formatRussian(value: Int): String {
     val number = value.toString()
     return if (number.endsWith("1")) {
-        "$number штука"
+        "$number человек"
     } else if (number.endsWith("2") || number.endsWith("3") || number.endsWith("4")) {
-        "$number штуки"
+        "$number человека"
     } else {
-        "$number штук"
-
+        "$number человек"
     }
 }
 
