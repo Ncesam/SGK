@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Theme.SGK.SplashScreen" parent="Theme.SplashScreen">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="postSplashScreenTheme">@style/Theme.SGK</item>
+    </style>
+
     <style name="Theme.SGK" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
