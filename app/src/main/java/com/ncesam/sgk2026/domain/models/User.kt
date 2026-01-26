@@ -1,6 +1,6 @@
 package com.ncesam.sgk2026.domain.models
 
-import java.util.Date
+import java.time.LocalDate
 
 
 data class User(
@@ -9,7 +9,7 @@ data class User(
 	val firstName: String,
 	val lastName: String,
 	val fatherName: String,
-	val born: Date,
+	val born: LocalDate,
 	val gender: Gender,
 	val avatar: String,
 )
