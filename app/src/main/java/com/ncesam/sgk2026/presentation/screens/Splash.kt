@@ -1,15 +1,13 @@
-package com.ncesam.sgk2026
+package com.ncesam.sgk2026.presentation.screens
 
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -17,33 +15,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
-import androidx.lifecycle.lifecycleScope
+import com.ncesam.sgk2026.presentation.navigation.AppNavigator
+import com.ncesam.sgk2026.presentation.viewModels.SplashViewModel
 import com.ncesam.uikit.foundation.AppTheme
-import com.ncesam.uikit.foundation.AppThemeProvider
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-
-class SplashActivity : ComponentActivity() {
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		enableEdgeToEdge()
-		actionBar?.hide()
-		setContent {
-			AppThemeProvider {
-				SplashScreenContent()
-			}
-		}
-
-		lifecycleScope.launch {
-			delay(2000)
-			val intent = Intent(this@SplashActivity, MainActivity::class.java)
-			startActivity(intent)
-			finish()
-		}
-
-	}
-}
-
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SplashScreenContent() {
@@ -70,4 +45,21 @@ fun SplashScreenContent() {
 			style = typography.h1ExtraBold.copy(fontSize = 64.sp)
 		)
 	}
+}
+
+
+@Composable
+fun SplashScreen(viewModel: SplashViewModel = koinViewModel()) {
+	val navigator = AppNavigator.navigator
+	val state by viewModel.state.collectAsState()
+	if (state.isLoading) {
+		SplashScreenContent()
+	}
+
+	LaunchedEffect(Unit) {
+		viewModel.navigationEvent.collect { value ->
+			navigator.navigate(value, true)
+		}
+	}
+
 }

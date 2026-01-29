@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
@@ -59,7 +61,7 @@ fun AppInput(
     // Helpers for styling
     val backgroundColor = if (!isError) colors.inputBackground else Color("#10FD3535".toColorInt())
     val borderColor =
-        if (isError) colors.error else if (isFocused) colors.accent else if (isFilled) colors.icons else colors.caption
+        if (isError) colors.error else if (isFocused) colors.accent else if (isFilled) colors.icons else colors.inputStroke
     val shape = RoundedCornerShape(10.dp)
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (helperText != null) {
@@ -81,7 +83,7 @@ fun AppInput(
                 modifier = Modifier
                     .onFocusChanged(onFocusChanged = onFocusChanged)
                     .weight(1f),
-                visualTransformation = passwordTransformation,
+                visualTransformation = if (isPassword) passwordTransformation else VisualTransformation.None,
                 textStyle = typography.headlineRegular,
                 decorationBox = { innerTextField ->
                     Box(modifier = Modifier, contentAlignment = Alignment.CenterStart) {

@@ -2,12 +2,27 @@ package com.ncesam.sgk2026.data.remote
 
 import com.ncesam.sgk2026.data.remote.dto.AuthLoginRequest
 import com.ncesam.sgk2026.data.remote.dto.AuthLoginResponse
+import com.ncesam.sgk2026.data.remote.dto.AuthRefreshTokenResponse
+import com.ncesam.sgk2026.data.remote.dto.UserDto
+import com.ncesam.sgk2026.domain.states.RegistrationParams
 import retrofit2.Response
 import retrofit2.http.*
 
 interface AuthApi {
-	@GET("/api/collections/users/auth-with-password")
+	@POST("/api/collections/users/auth-with-password")
 	suspend fun login(
 		@Body request: AuthLoginRequest
 	): Response<AuthLoginResponse>
+
+
+	@POST("/api/collections/users/auth-refresh")
+	suspend fun refreshToken(
+		@Header("Authorization") token: String
+	): Response<AuthRefreshTokenResponse>
+
+	@POST("/api/collection/users/records")
+	suspend fun register(
+		@Body body: RegistrationParams
+	): Response<UserDto>
 }
+

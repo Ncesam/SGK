@@ -2,6 +2,7 @@ plugins {
 	alias(libs.plugins.android.application)
 	alias(libs.plugins.kotlin.android)
 	alias(libs.plugins.kotlin.compose)
+	alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 android {
@@ -50,9 +51,16 @@ dependencies {
 	implementation(libs.koin.core)
 	implementation(libs.koin.compose)
 	implementation(libs.koin.androidx.compose)
+	implementation(libs.koin.compose.viewmodel)
+	implementation(libs.koin.compose.viewmodel.navigation)
+	implementation(libs.androidx.navigation.common.ktx)
 
 	// JUnit
 	testImplementation(libs.junit)
+
+	// Navigation
+	implementation(libs.androidx.navigation)
+	implementation(libs.kotlinx.serialization.json)
 
 	//	Android
 	implementation(libs.androidx.core.ktx)

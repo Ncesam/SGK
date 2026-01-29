@@ -1,6 +1,8 @@
 package com.ncesam.uikit.components
 
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -16,13 +19,34 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorProducer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Icon
+import com.ncesam.uikit.R
 import com.ncesam.uikit.foundation.AppTheme
 import com.ncesam.uikit.foundation.AppThemeProvider
 
+
+@Composable
+fun AppButtonOAuth(variant: AppButtonVariant = AppButtonVariant.VK, onClick: () -> Unit) {
+	val shape = RoundedCornerShape(12.dp)
+	val colors = AppTheme.colors
+
+	Image(
+		painter = painterResource(id = variant.icon),
+		modifier = Modifier
+			.background(colors.white, shape)
+			.border(1.dp, colors.inputStroke, shape)
+			.clickable {
+				onClick()
+			}
+			.padding(20.dp),
+		contentDescription = null
+	)
+}
 
 @Composable
 fun AppButtonCircle(
@@ -35,8 +59,7 @@ fun AppButtonCircle(
 			.background(colors.white, shape)
 			.border(1.dp, colors.inputStroke, shape)
 			.padding(45.dp)
-			.clickable { onClick() }
-	) {
+			.clickable { onClick() }) {
 		Icon(painter = AppTheme.icons.Plus, tint = colors.icons, contentDescription = "AddImage")
 	}
 }
@@ -58,9 +81,7 @@ fun AppButton(
 		AppButtonStyle.Default -> Modifier.background(colors.inputBackground, shape)
 	} else Modifier.background(colors.accentInactive, shape)
 	modifier = if (style == AppButtonStyle.Stroked) modifier.border(
-		1.dp,
-		colors.accent,
-		shape
+		1.dp, colors.accent, shape
 	) else modifier
 
 	val textColor = ColorProducer {
@@ -71,10 +92,10 @@ fun AppButton(
 		} else colors.white
 		color
 	}
-	val width = when (size) {
-		AppButtonSize.Big -> 340.dp
-		AppButtonSize.Small -> 100.dp
-		AppButtonSize.Chip -> 140.dp
+	modifier = when (size) {
+		AppButtonSize.Big -> modifier.fillMaxWidth()
+		AppButtonSize.Small -> modifier.width(100.dp)
+		AppButtonSize.Chip -> modifier.width(140.dp)
 	}
 	val verticalPadding = when (size) {
 		AppButtonSize.Small -> 8.dp
@@ -89,31 +110,25 @@ fun AppButton(
 	Row(
 		modifier = modifier
 			.clickable(enabled = enabled, onClick = onClick)
-			.width(width)
-			.padding(vertical = verticalPadding),
-		Arrangement.Center, Alignment.CenterVertically
+			.padding(vertical = verticalPadding), Arrangement.Center, Alignment.CenterVertically
 
 	) {
 		BasicText(
-			text = content,
-			style = font,
-			color = textColor,
-			maxLines = 1
+			text = content, style = font, color = textColor, maxLines = 1
 		)
 	}
 
 }
 
 @Composable
-fun ToCartAppButton(
-	onClick: () -> Unit,
-	total: Int = 500
+fun AppButtonToCart(
+	onClick: () -> Unit, total: Int = 500
 ) {
 	val colors = AppTheme.colors
 	val typography = AppTheme.typography
 	Row(
 		Modifier
-			.width(340.dp)
+			.fillMaxWidth()
 			.background(color = colors.accent, shape = RoundedCornerShape(10.dp))
 			.padding(16.dp)
 			.clickable(onClick = onClick),
@@ -134,7 +149,7 @@ fun ToCartAppButton(
 }
 
 @Composable
-fun BackAppButton(
+fun AppButtonBack(
 	onClick: () -> Unit
 ) {
 	Icon(
@@ -149,7 +164,7 @@ fun BackAppButton(
 }
 
 @Composable
-fun FilterAppButton(
+fun AppButtonFilter(
 	onClick: () -> Unit
 ) {
 	Icon(
@@ -163,6 +178,20 @@ fun FilterAppButton(
 	)
 }
 
+
+enum class AppButtonStyle {
+	Accent, Stroked, Default
+}
+
+enum class AppButtonSize {
+	Big, Chip, Small
+}
+
+
+enum class AppButtonVariant(@DrawableRes val icon: Int) {
+	VK(R.drawable.vk), Yandex(R.drawable.yandex)
+}
+
 @Preview
 @Composable
 fun AppButtonPreview() {
@@ -171,32 +200,27 @@ fun AppButtonPreview() {
 			AppButton(
 				style = AppButtonStyle.Default,
 				size = AppButtonSize.Chip,
-				onClick = { }, enabled = true
+				onClick = { },
+				enabled = true
 			)
 			AppButton(
 				style = AppButtonStyle.Stroked,
 				size = AppButtonSize.Big,
-				onClick = { }, enabled = true
+				onClick = { },
+				enabled = true
 			)
 			AppButton(
 				style = AppButtonStyle.Accent,
 				size = AppButtonSize.Small,
-				onClick = { }, enabled = true
+				onClick = { },
+				enabled = true
 			)
-			ToCartAppButton({})
-			BackAppButton {}
-			FilterAppButton {}
+			AppButtonToCart({})
+			AppButtonBack {}
+			AppButtonFilter {}
 			AppButtonCircle { }
+			AppButtonOAuth(variant = AppButtonVariant.Yandex) { }
+			AppButtonOAuth { }
 		}
 	}
-}
-
-enum class AppButtonStyle {
-	Accent,
-	Stroked,
-	Default
-}
-
-enum class AppButtonSize {
-	Big, Chip, Small
 }

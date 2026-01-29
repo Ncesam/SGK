@@ -18,12 +18,12 @@ import com.ncesam.uikit.components.AppSnackBar
 import kotlinx.coroutines.launch
 
 val LocalAppSnackBarProvider = staticCompositionLocalOf<(String) -> Unit> {
-	error("No AppSnackBar provided! Wrap your app in AppSnackBarProvider.")
+	error("No AppSnackBar provided! Wrap your app in ScreenProvider.")
 }
 
 
 @Composable
-fun AppSnackBarProvider(content: @Composable () -> Unit) {
+fun ScreenProvider(content: @Composable () -> Unit) {
 	val snackBarHostState = remember { SnackbarHostState() }
 	val scope = rememberCoroutineScope()
 
@@ -43,12 +43,13 @@ fun AppSnackBarProvider(content: @Composable () -> Unit) {
 			) { data ->
 				AppSnackBar(data.visuals.message) { data.dismiss() }
 			}
+
 		}
 	}
 }
 
-object AppSnackBarContext {
-	val show: (String) -> Unit
+object ScreenContext {
+	val showSnackBar: (String) -> Unit
 		@Composable
 		@ReadOnlyComposable
 		get() = LocalAppSnackBarProvider.current
