@@ -28,6 +28,6 @@ fun validateDate(date: String?): Boolean {
 
 fun validateEmail(email: String?): Boolean {
 	if (email.isNullOrBlank()) return false
-	val pattern = """[a-z0-9]+@[a-z]+\.[a-z]""".toRegex()
+	val pattern = """[a-z0-9]+@[a-z]+\.[a-z]+""".toRegex()
 	return pattern.matches(email)
 }

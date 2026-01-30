@@ -13,6 +13,7 @@ data class RegistrationState(
 	val password: String = "",
 	val retryPassword: String = "",
 	val rulesPassword: PasswordRules = PasswordRules(),
+	val pinCode: String = "",
 	val emailError: String? = null,
 	val passwordError: String? = null,
 	val genderError: String? = null,
@@ -65,7 +66,8 @@ sealed interface RegistrationEvent {
 	data class EmailChanged(val value: String) : RegistrationEvent
 	data class PasswordChanged(val value: String) : RegistrationEvent
 	data class RetryPasswordChanged(val value: String): RegistrationEvent
-	data class PinCodeChanged(val value: Int) : RegistrationEvent
+	data class AddSymbolPinCode(val value: String) : RegistrationEvent
+	object DeleteSymbolPinCode : RegistrationEvent
 	object SaveUser : RegistrationEvent
 	object GoToPassword : RegistrationEvent
 	object GoToPinCode : RegistrationEvent

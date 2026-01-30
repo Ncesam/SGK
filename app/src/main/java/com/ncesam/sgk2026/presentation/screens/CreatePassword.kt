@@ -3,15 +3,16 @@ package com.ncesam.sgk2026.presentation.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -58,16 +59,20 @@ fun CreatePasswordContent(state: RegistrationState, onEvent: (RegistrationEvent)
 	val typography = AppTheme.typography
 	val roundedShape = RoundedCornerShape(10.dp)
 
-	Box(
+	val scrollState = rememberScrollState()
+
+	Column(
 		modifier = Modifier
 			.fillMaxSize()
 			.background(colors.white)
+			.verticalScroll(scrollState)
 			.statusBarsPadding()
 			.imePadding()
 			.padding(top = 59.dp, start = 20.dp, end = 20.dp),
+		verticalArrangement = Arrangement.spacedBy(60.dp),
+		horizontalAlignment = Alignment.CenterHorizontally
 	) {
 		Column(
-			modifier = Modifier.align(Alignment.TopCenter),
 			verticalArrangement = Arrangement.spacedBy(23.dp),
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
@@ -75,7 +80,6 @@ fun CreatePasswordContent(state: RegistrationState, onEvent: (RegistrationEvent)
 			BasicText(text = "Введите новый пароль", style = typography.captionRegular)
 		}
 		Column(
-			modifier = Modifier.align(Alignment.Center),
 			verticalArrangement = Arrangement.spacedBy(16.dp)
 		) {
 			AppInput(
@@ -93,9 +97,9 @@ fun CreatePasswordContent(state: RegistrationState, onEvent: (RegistrationEvent)
 			Column(
 				modifier = Modifier
 					.fillMaxWidth()
+					.shadow(1.dp, roundedShape)
 					.background(colors.white, roundedShape)
 					.border(1.dp, colors.inputStroke, roundedShape)
-					.shadow(1.dp, roundedShape)
 					.padding(16.dp),
 				verticalArrangement = Arrangement.spacedBy(8.dp),
 				horizontalAlignment = Alignment.Start
@@ -104,28 +108,28 @@ fun CreatePasswordContent(state: RegistrationState, onEvent: (RegistrationEvent)
 				BasicText(
 					text = "• Минимум 8 символов",
 					style = typography.caption2Regular,
-					color = { if (state.rulesPassword.minLength) colors.success else colors.black })
+					color = { if (state.password.isBlank()) colors.black else if (state.rulesPassword.minLength) colors.success else colors.error })
 				BasicText(
 					text = "• Заглавная буква",
 					style = typography.caption2Regular,
-					color = { if (state.rulesPassword.hasUpper) colors.success else colors.black })
+					color = { if (state.password.isBlank()) colors.black else if (state.rulesPassword.hasUpper) colors.success else colors.error })
 				BasicText(
 					text = "• Строчная буква",
 					style = typography.caption2Regular,
-					color = { if (state.rulesPassword.hasLower) colors.success else colors.black })
+					color = { if (state.password.isBlank()) colors.black else if (state.rulesPassword.hasLower) colors.success else colors.error })
 				BasicText(
 					text = "• Цифра",
 					style = typography.caption2Regular,
-					color = { if (state.rulesPassword.hasDigit) colors.success else colors.black })
+					color = { if (state.password.isBlank()) colors.black else if (state.rulesPassword.hasDigit) colors.success else colors.error })
 				BasicText(
 					text = "• Спецсимвол (!@#\$)",
 					style = typography.caption2Regular,
-					color = { if (state.rulesPassword.hasSpecial) colors.success else colors.black })
+					color = { if (state.password.isBlank()) colors.black else if (state.rulesPassword.hasSpecial) colors.success else colors.error })
 
 			}
 			AppInput(
 				{ state -> inputState = inputState.copy(retryPasswordFocused = state.isFocused) },
-				{ text -> onEvent(RegistrationEvent.PasswordChanged(text)) },
+				{ text -> onEvent(RegistrationEvent.RetryPasswordChanged(text)) },
 				{
 					inputState =
 						inputState.copy(visibleRetryPassword = !inputState.visibleRetryPassword)
@@ -141,7 +145,7 @@ fun CreatePasswordContent(state: RegistrationState, onEvent: (RegistrationEvent)
 				style = AppButtonStyle.Accent,
 				content = "Сохранить",
 				onClick = { onEvent(RegistrationEvent.GoToPinCode) },
-				enabled = state.rulesPassword.isValid()
+				enabled = state.rulesPassword.isValid() && state.isPasswordRetryEqual
 			)
 		}
 

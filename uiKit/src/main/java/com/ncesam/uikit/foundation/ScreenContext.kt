@@ -3,6 +3,7 @@ package com.ncesam.uikit.foundation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -39,7 +40,8 @@ fun ScreenProvider(content: @Composable () -> Unit) {
 				hostState = snackBarHostState,
 				modifier = Modifier
 					.align(Alignment.TopCenter)
-					.padding(top = 16.dp)
+					.statusBarsPadding()
+					.padding(16.dp)
 			) { data ->
 				AppSnackBar(data.visuals.message) { data.dismiss() }
 			}

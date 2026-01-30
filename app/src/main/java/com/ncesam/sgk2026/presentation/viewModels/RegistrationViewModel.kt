@@ -68,8 +68,12 @@ class RegistrationViewModel(private val registerUseCase: RegisterUseCase) : View
 
 			}
 
-			is RegistrationEvent.PinCodeChanged -> {
-				_state.update { current -> current.copy() }
+			is RegistrationEvent.AddSymbolPinCode -> {
+				_state.update { current -> current.copy(pinCode = current.pinCode + event.value) }
+			}
+
+			is RegistrationEvent.DeleteSymbolPinCode -> {
+				_state.update { current -> current.copy(pinCode = current.pinCode.dropLast(1))}
 			}
 
 
@@ -84,17 +88,14 @@ class RegistrationViewModel(private val registerUseCase: RegisterUseCase) : View
 			is RegistrationEvent.GoToPassword -> {
 				val current = state.value
 				val bornError =
-					if (validateDate(current.born)) "Введите дату рождения (2022-02-24)" else null
-				val emailError = if (validateEmail(current.email)) "Введите E-Mail" else null
-				val genderError =
-					if (current.gender in listOf("male", "female")) null else "Укажите пол"
+					if (!validateDate(current.born)) "Введите дату рождения (2022-02-24)" else null
+				val emailError = if (!validateEmail(current.email)) "Введите E-Mail" else null
 				if (current.isPasswordButtonEnabled) {
-					if (listOf(bornError, emailError, genderError).any { !it.isNullOrBlank() }) {
+					if (listOf(bornError, emailError).any { !it.isNullOrBlank() }) {
 						_state.update { current ->
 							current.copy(
 								bornError = bornError,
 								emailError = emailError,
-								genderError = genderError
 							)
 						}
 					} else {

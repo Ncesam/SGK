@@ -76,8 +76,8 @@ fun LoginContent(state: LoginState, onEvent: (LoginEvent) -> Unit) {
 	Column(
 		modifier = Modifier
 			.fillMaxSize()
-			.statusBarsPadding()
 			.background(colors.white)
+			.statusBarsPadding()
 			.padding(horizontal = 20.dp, vertical = 60.dp),
 		horizontalAlignment = Alignment.CenterHorizontally,
 		verticalArrangement = Arrangement.spacedBy(60.dp)

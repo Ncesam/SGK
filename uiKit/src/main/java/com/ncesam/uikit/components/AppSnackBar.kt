@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Icon
@@ -27,7 +28,7 @@ fun AppSnackBar(
 	val colors = AppTheme.colors
 	val typography = AppTheme.typography
 	val shape = RoundedCornerShape(8.dp)
-	Box(modifier = Modifier.width(380.dp).background(colors.white, shape)) {
+	Box(modifier = Modifier.width(380.dp).shadow(1.dp, shape).background(colors.white, shape)) {
 		Icon(
 			painter = AppTheme.icons.CrossRounded,
 			modifier = Modifier
