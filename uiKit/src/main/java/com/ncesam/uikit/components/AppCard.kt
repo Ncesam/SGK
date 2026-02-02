@@ -19,6 +19,8 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -41,6 +43,8 @@ fun AppCard(
 	Column(
 		horizontalAlignment = Alignment.CenterHorizontally,
 		modifier = Modifier
+			.clickable(onClick = onClick)
+			.shadow(1.dp, shape)
 			.background(colors.white, shape)
 			.border(1.5f.dp, colors.inputStroke, shape)
 	) {
@@ -56,7 +60,6 @@ fun AppCard(
 			modifier = Modifier
 				.fillMaxWidth()
 				.padding(16.dp)
-				.clickable(onClick = onClick)
 		) {
 			content()
 		}
@@ -75,6 +78,7 @@ fun SmallAppCard(
 	val shape = RoundedCornerShape(10.dp)
 	Row(
 		modifier = Modifier
+			.clickable(onClick = { onClick() })
 			.width(230.dp)
 			.height(140.dp)
 			.background(colors.white, shape)
@@ -87,15 +91,15 @@ fun SmallAppCard(
 			painter = image,
 			modifier = Modifier
 				.weight(1.2f)
-				.fillMaxHeight(),
+				.fillMaxHeight()
+				.clip(shape),
 			contentDescription = null,
 			contentScale = ContentScale.Crop
 		)
 		Box(
 			modifier = Modifier
 				.weight(1f)
-				.padding(horizontal = 16.dp)
-				.clickable(onClick = onClick),
+				.padding(horizontal = 16.dp),
 			contentAlignment = Alignment.Center
 		) {
 			BasicText(
@@ -123,7 +127,7 @@ fun PrimaryAppCard(
 	val buttonStyle = if (added) AppButtonStyle.Stroked else AppButtonStyle.Accent
 	val buttonContent = if (added) "Отменить" else "Выбрать"
 
-	AppCard(image = image, onClick = onClickCard) {
+	AppCard(image = image, onClick = { onClickCard() }) {
 		Column(modifier = Modifier.width(340.dp)) {
 			Row(
 				modifier = Modifier
@@ -149,7 +153,7 @@ fun PrimaryAppCard(
 							color = { colors.black })
 					}
 					BasicText(
-						text = price.toString() + "₽",
+						text = "От " + price.toString() + "₽",
 						style = typography.h3SemiBold,
 						color = { colors.black })
 				}

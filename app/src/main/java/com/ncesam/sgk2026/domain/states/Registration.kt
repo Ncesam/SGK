@@ -13,6 +13,7 @@ data class RegistrationState(
 	val password: String = "",
 	val retryPassword: String = "",
 	val rulesPassword: PasswordRules = PasswordRules(),
+	val useBiometric: Boolean? = null,
 	val pinCode: String = "",
 	val emailError: String? = null,
 	val passwordError: String? = null,
@@ -28,7 +29,7 @@ data class RegistrationState(
 			gender,
 			email
 		).all { it.isNotBlank() }
-	
+
 	val isPasswordRetryEqual: Boolean
 		get() = password == retryPassword
 
@@ -36,11 +37,12 @@ data class RegistrationState(
 		return RegistrationParams(
 			firstName = firstName.ifBlank { return null },
 			lastName = lastName.ifBlank { return null },
-			fatherName = fatherName.ifBlank {return null},
-			born = born.ifBlank {return null},
-			gender = gender.ifBlank {return null},
-			email = email.ifBlank {return null},
-			password = password.ifBlank {return null},
+			fatherName = fatherName.ifBlank { return null },
+			born = born.ifBlank { return null },
+			gender = gender.ifBlank { return null },
+			email = email.ifBlank { return null },
+			password = password.ifBlank { return null },
+			retryPassword = retryPassword.ifBlank { return null }
 		)
 	}
 }
@@ -54,7 +56,8 @@ data class RegistrationParams(
 	val born: String,
 	val gender: String,
 	val email: String,
-	val password: String
+	val password: String,
+	@SerialName("passwordConfirm") val retryPassword: String,
 )
 
 sealed interface RegistrationEvent {
@@ -65,7 +68,8 @@ sealed interface RegistrationEvent {
 	data class GenderChanged(val value: String) : RegistrationEvent
 	data class EmailChanged(val value: String) : RegistrationEvent
 	data class PasswordChanged(val value: String) : RegistrationEvent
-	data class RetryPasswordChanged(val value: String): RegistrationEvent
+	data class RetryPasswordChanged(val value: String) : RegistrationEvent
+	data class UseBiometricChanged(val value: Boolean) : RegistrationEvent
 	data class AddSymbolPinCode(val value: String) : RegistrationEvent
 	object DeleteSymbolPinCode : RegistrationEvent
 	object SaveUser : RegistrationEvent
@@ -78,6 +82,7 @@ sealed interface RegistrationEffect {
 	object NavigateToCreatePasswordScreen : RegistrationEffect
 	object NavigateToCreatePinCodeScreen : RegistrationEffect
 	object NavigateToLogin : RegistrationEffect
+
 }
 
 data class PasswordRules(

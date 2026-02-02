@@ -49,4 +49,6 @@ object AppIcons {
         @Composable get() = painterResource(R.drawable.shopcart)
     val Trash: Painter
         @Composable get() = painterResource(R.drawable.trash)
+	val Profile: Painter
+		@Composable get() = painterResource(R.drawable.profile)
 }

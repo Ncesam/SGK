@@ -14,7 +14,3 @@ data class User(
 	val avatar: String,
 )
 
-enum class Gender(val value: String) {
-	Male("male"),
-	Female("female")
-}

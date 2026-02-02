@@ -19,7 +19,7 @@ import com.ncesam.uikit.foundation.AppTheme
 import com.ncesam.uikit.foundation.AppThemeProvider
 
 
-@Composable()
+@Composable
 fun AppNavigationBottomTab(
 	item: AppNavigationBottomTabItem,
 	selected: Boolean = false,

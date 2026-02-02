@@ -24,34 +24,34 @@ class RegistrationViewModel(private val registerUseCase: RegisterUseCase) : View
 	suspend fun onEvent(event: RegistrationEvent) {
 		when (event) {
 			is RegistrationEvent.FirstNameChanged -> {
-				_state.update { current -> current.copy(firstName = event.value) }
+				_state.update { current -> current.copy(firstName = event.value.trim()) }
 			}
 
 			is RegistrationEvent.LastNameChanged -> {
-				_state.update { current -> current.copy(lastName = event.value) }
+				_state.update { current -> current.copy(lastName = event.value.trim()) }
 			}
 
 			is RegistrationEvent.FatherNameChanged -> {
-				_state.update { current -> current.copy(fatherName = event.value) }
+				_state.update { current -> current.copy(fatherName = event.value.trim()) }
 			}
 
 			is RegistrationEvent.EmailChanged -> {
-				_state.update { current -> current.copy(email = event.value) }
+				_state.update { current -> current.copy(email = event.value.trim()) }
 			}
 
 			is RegistrationEvent.BornChanged -> {
-				_state.update { current -> current.copy(born = event.value) }
+				_state.update { current -> current.copy(born = event.value.trim()) }
 			}
 
 			is RegistrationEvent.GenderChanged -> {
-				_state.update { current -> current.copy(gender = event.value) }
+				_state.update { current -> current.copy(gender = event.value.trim()) }
 			}
 
 			is RegistrationEvent.PasswordChanged -> {
-				val rules = validatePassword(event.value)
+				val rules = validatePassword(event.value.trim())
 				_state.update { current ->
 					current.copy(
-						password = event.value,
+						password = event.value.trim(),
 						rulesPassword = rules
 					)
 				}
@@ -59,23 +59,30 @@ class RegistrationViewModel(private val registerUseCase: RegisterUseCase) : View
 
 			is RegistrationEvent.RetryPasswordChanged -> {
 				_state.update { current ->
-					val retryPassword = event.value
+					val retryPassword = event.value.trim()
 					current.copy(
 						retryPassword = retryPassword,
 						passwordError = if (retryPassword != current.password) "Пароли не совпадают" else null
 					)
 				}
+			}
 
+			is RegistrationEvent.UseBiometricChanged -> {
+				_state.update { current ->
+					current.copy(useBiometric = event.value)
+				}
+				onEvent(RegistrationEvent.SaveUser)
 			}
 
 			is RegistrationEvent.AddSymbolPinCode -> {
-				_state.update { current -> current.copy(pinCode = current.pinCode + event.value) }
+				_state.update { current ->
+					current.copy(pinCode = current.pinCode + event.value.trim())
+				}
 			}
 
 			is RegistrationEvent.DeleteSymbolPinCode -> {
-				_state.update { current -> current.copy(pinCode = current.pinCode.dropLast(1))}
+				_state.update { current -> current.copy(pinCode = current.pinCode.dropLast(1)) }
 			}
-
 
 			is RegistrationEvent.SaveUser -> {
 				registerUseCase(_state.value)

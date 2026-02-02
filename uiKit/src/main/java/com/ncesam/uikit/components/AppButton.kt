@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorProducer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,11 +74,12 @@ fun AppButton(
 ) {
 	val colors = AppTheme.colors
 	val shape = RoundedCornerShape(10.dp)
-	var modifier = if (enabled) when (style) {
-		AppButtonStyle.Accent -> Modifier.background(colors.accent, shape)
-		AppButtonStyle.Stroked -> Modifier.background(colors.white, shape)
-		AppButtonStyle.Default -> Modifier.background(colors.inputBackground, shape)
-	} else Modifier.background(colors.accentInactive, shape)
+	var modifier = Modifier.clickable(enabled = enabled, onClick = onClick)
+	modifier = if (enabled) when (style) {
+		AppButtonStyle.Accent -> modifier.background(colors.accent, shape)
+		AppButtonStyle.Stroked -> modifier.background(colors.white, shape)
+		AppButtonStyle.Default -> modifier.background(colors.inputBackground, shape)
+	} else modifier.background(colors.accentInactive, shape)
 	modifier = if (style == AppButtonStyle.Stroked) modifier.border(
 		1.dp, colors.accent, shape
 	) else modifier
@@ -100,7 +100,7 @@ fun AppButton(
 	val verticalPadding = when (size) {
 		AppButtonSize.Small -> 8.dp
 		AppButtonSize.Big -> 15.dp
-		AppButtonSize.Chip -> 10.dp
+		AppButtonSize.Chip -> 14.dp
 	}
 	val font = when (size) {
 		AppButtonSize.Small -> AppTheme.typography.captionSemiBold
@@ -109,7 +109,6 @@ fun AppButton(
 	}
 	Row(
 		modifier = modifier
-			.clickable(enabled = enabled, onClick = onClick)
 			.padding(vertical = verticalPadding), Arrangement.Center, Alignment.CenterVertically
 
 	) {

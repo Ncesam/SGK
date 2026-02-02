@@ -6,6 +6,7 @@ import org.koin.dsl.module
 
 val UseCaseModule = module {
 	factory { LoginUseCase(get(), get()) }
-	factory { RefreshTokenUseCase(get(), get()) }
-	factory { RegisterUseCase(get()) }
+	factory { RefreshTokenUseCase(get()) }
+	factory { RegisterUseCase(get(), get()) }
+	factory { GetAllHotelUseCase(get()) }
 }

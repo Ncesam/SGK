@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,13 +42,16 @@ fun AppBottomSheet(
 	name: String = "Example",
 	content: @Composable () -> Unit
 ) {
+	val sheetState = rememberModalBottomSheetState(true)
 	val colors = AppTheme.colors
 	val typography = AppTheme.typography
 	if (isVisible) {
 		ModalBottomSheet(
+			sheetState = sheetState,
 			onDismissRequest = onDismiss,
 			contentColor = colors.white,
-			containerColor = colors.white
+			containerColor = colors.white,
+			tonalElevation = 1.dp,
 		) {
 			Box(
 				modifier = Modifier

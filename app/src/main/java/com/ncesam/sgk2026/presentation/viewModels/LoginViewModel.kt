@@ -25,11 +25,11 @@ class LoginViewModel(
 	suspend fun onEvent(event: LoginEvent) {
 		when (event) {
 			is LoginEvent.EmailChanged -> {
-				_state.update { it.copy(email = event.email, emailError = null) }
+				_state.update { it.copy(email = event.email.trim(), emailError = null) }
 			}
 
 			is LoginEvent.PasswordChanged -> {
-				_state.update { it.copy(password = event.password, passwordError = null) }
+				_state.update { it.copy(password = event.password.trim(), passwordError = null) }
 			}
 
 			is LoginEvent.LoginClicked -> performLogin()

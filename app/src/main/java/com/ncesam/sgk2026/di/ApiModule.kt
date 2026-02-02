@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.ncesam.sgk2026.data.remote.AuthApi
+import com.ncesam.sgk2026.data.remote.HotelApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -30,5 +31,5 @@ val ApiModule = module {
 		)
 	}
 	single<AuthApi> { get<Retrofit>().create(AuthApi::class.java) }
-
+	single<HotelApi> {get<Retrofit>().create(HotelApi::class.java)}
 }

@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ncesam.sgk2026.domain.navigation.AppRoute
 import com.ncesam.sgk2026.presentation.screens.CreatePasswordScreen
+import com.ncesam.sgk2026.presentation.screens.CreatePinCodeScreen
 import com.ncesam.sgk2026.presentation.screens.CreateProfileScreen
 import com.ncesam.sgk2026.presentation.screens.LoginScreen
 import com.ncesam.sgk2026.presentation.viewModels.RegistrationViewModel
@@ -32,8 +33,12 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
 			)
 			CreatePasswordScreen(sharedVM)
 		}
-		composable<AppRoute.CreatePinCode> {
-
+		composable<AppRoute.CreatePinCode> { backStateEntry ->
+			val sharedVM = backStateEntry.sharedKoinViewModel<RegistrationViewModel>(
+				navController,
+				AppRoute.AuthGraph
+			)
+			CreatePinCodeScreen(sharedVM)
 		}
 	}
 }

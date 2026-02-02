@@ -45,6 +45,11 @@ android {
 dependencies {
 	// Retrofit
 	implementation(libs.retrofit2)
+	implementation(libs.retrofit2.converter.gson)
+	implementation(libs.okhttp3.logging)
+	implementation(libs.kotlinx.serialization.json)
+	implementation(libs.retrofit2.kotlinx.serialization.converter)
+
 
 	// Koin
 	implementation(platform(libs.koin.bom))

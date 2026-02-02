@@ -2,6 +2,7 @@ package com.ncesam.uikit.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -14,15 +15,22 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ncesam.uikit.R
 import com.ncesam.uikit.foundation.AppTheme
 import com.ncesam.uikit.foundation.AppThemeProvider
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -40,8 +48,7 @@ fun AppPinCode(onAdd: (number: String) -> Unit, onDelete: () -> Unit) {
 		horizontalArrangement = Arrangement.spacedBy(24.dp),
 	) {
 		items(items = pinCodeNumbersList) { i ->
-			val interactionSource = remember { MutableInteractionSource() }
-			val isPressed by interactionSource.collectIsPressedAsState()
+			var isPressed by remember { mutableStateOf(false) }
 			Box(
 				modifier = Modifier
 					.aspectRatio(1f)
@@ -49,8 +56,21 @@ fun AppPinCode(onAdd: (number: String) -> Unit, onDelete: () -> Unit) {
 						if (isPressed) colors.accent else colors.inputBackground,
 						shape = shape
 					)
-					.clickable(interactionSource = interactionSource, indication = null) {
-						onAdd(i.toString())
+					.pointerInput(Unit) {
+						detectTapGestures(
+							onPress = {
+								try {
+									isPressed = true
+									onAdd(i.toString())
+
+									tryAwaitRelease()
+								} finally {
+									delay(40)
+									isPressed = false
+								}
+
+							}
+						)
 					},
 				contentAlignment = Alignment.Center
 			) {
@@ -62,8 +82,7 @@ fun AppPinCode(onAdd: (number: String) -> Unit, onDelete: () -> Unit) {
 		}
 		item { Spacer(modifier = Modifier.aspectRatio(1f)) }
 		item {
-			val interactionSource = remember { MutableInteractionSource() }
-			val isPressed by interactionSource.collectIsPressedAsState()
+			var isPressed by remember { mutableStateOf(false) }
 			Box(
 				modifier = Modifier
 					.aspectRatio(1f)
@@ -71,8 +90,21 @@ fun AppPinCode(onAdd: (number: String) -> Unit, onDelete: () -> Unit) {
 						if (isPressed) colors.accent else colors.inputBackground,
 						shape = shape
 					)
-					.clickable(interactionSource = interactionSource, indication = null) {
-						onAdd(0.toString())
+					.pointerInput(Unit) {
+						detectTapGestures(
+							onPress = {
+								try {
+									isPressed = true
+									onAdd(0.toString())
+
+									tryAwaitRelease()
+								} finally {
+									delay(40)
+									isPressed = false
+								}
+
+							}
+						)
 					},
 				contentAlignment = Alignment.Center
 			) {
@@ -82,10 +114,17 @@ fun AppPinCode(onAdd: (number: String) -> Unit, onDelete: () -> Unit) {
 					color = { if (isPressed) colors.white else colors.black })
 			}
 		}
+		item {
+			Box(
+				modifier = Modifier
+					.aspectRatio(1f)
+					.clickable { onDelete() },
+				contentAlignment = Alignment.Center
+			) { Icon(painter = painterResource(R.drawable.back), contentDescription = null) }
+		}
 	}
 }
 
-`````c
 @Preview
 @Composable
 fun PreviewAppPinCode() {
