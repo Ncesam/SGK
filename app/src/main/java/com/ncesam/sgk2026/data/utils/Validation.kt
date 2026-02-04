@@ -31,3 +31,9 @@ fun validateEmail(email: String?): Boolean {
 	val pattern = """[a-z0-9]+@[a-z]+\.[a-z]+""".toRegex()
 	return pattern.matches(email)
 }
+
+fun validatePhone(phone: String): Boolean {
+	if (phone.isBlank()) return false
+	val pattern =  """^(8|\+7)\d{10}$""".toRegex()
+	return pattern.matches(phone)
+}
