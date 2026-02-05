@@ -17,9 +17,11 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,8 +29,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ncesam.sgk2026.domain.models.Facility
 import com.ncesam.sgk2026.domain.models.Hotel
+import com.ncesam.sgk2026.domain.navigation.AppRoute
+import com.ncesam.sgk2026.domain.states.MainEffect
 import com.ncesam.sgk2026.domain.states.MainEvent
 import com.ncesam.sgk2026.domain.states.MainState
+import com.ncesam.sgk2026.presentation.navigation.AppNavigator
 import com.ncesam.sgk2026.presentation.viewModels.MainViewModel
 import com.ncesam.uikit.components.AppBottomSheet
 import com.ncesam.uikit.components.AppButton
@@ -39,7 +44,9 @@ import com.ncesam.uikit.components.PrimaryAppCard
 import com.ncesam.uikit.components.SmallAppCard
 import com.ncesam.uikit.foundation.AppTheme
 import com.ncesam.uikit.foundation.AppThemeProvider
+import com.ncesam.uikit.foundation.ScreenContext
 import com.ncesam.uikit.foundation.ScreenProvider
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -60,14 +67,14 @@ fun MainContent(state: MainState, onEvent: (MainEvent) -> Unit) {
 	Column(
 		modifier = Modifier
 			.fillMaxSize()
-			.imePadding()
 			.statusBarsPadding()
+			.imePadding()
 			.background(colors.white)
 	) {
 		LazyColumn(
 			modifier = Modifier
 				.fillMaxSize()
-				.padding(20.dp),
+				.padding(top = 20.dp, start = 20.dp, end = 20.dp),
 			verticalArrangement = Arrangement.spacedBy(44.dp)
 		) {
 			item {
@@ -196,7 +203,25 @@ fun MainContent(state: MainState, onEvent: (MainEvent) -> Unit) {
 
 @Composable
 fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
+	val scope = rememberCoroutineScope()
+	val state by viewModel.state.collectAsState()
+	val showSnackBar = ScreenContext.showSnackBar
+	val bottomTabs = AppNavigator.bottomTabs
+	bottomTabs.show()
+	val navigator = AppNavigator.navigator
+	LaunchedEffect(Unit) {
+		viewModel.effect.collect { effect ->
+			when (effect) {
+				is MainEffect.ShowSnackBar -> showSnackBar(effect.msg)
+				is MainEffect.GoToSearch -> navigator.navigate(AppRoute.Search(effect.value))
+				is MainEffect.GoToProfile -> navigator.navigate(AppRoute.Profile)
+				is MainEffect.GoToBooking -> navigator.navigate(AppRoute.Booking(effect.hotelId))
+			}
 
+		}
+	}
+
+	MainContent(state) { event -> scope.launch { viewModel.onEvent(event) } }
 }
 
 

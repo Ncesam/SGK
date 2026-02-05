@@ -4,18 +4,19 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.ncesam.sgk2026.domain.navigation.AppRoute
+import com.ncesam.sgk2026.presentation.screens.BookingScreen
+import com.ncesam.sgk2026.presentation.screens.MainScreen
 
 
 fun NavGraphBuilder.mainGraph() {
-	navigation(
-		route = AppRoute.MainGraph.routeId,
-		startDestination = AppRoute.Main.routeId
+	navigation<AppRoute.MainGraph>(
+		startDestination = AppRoute.Main
 	) {
 		composable<AppRoute.Main> {
-
+			MainScreen()
 		}
 		composable<AppRoute.Booking> {
-
+			BookingScreen()
 		}
 		composable<AppRoute.ShopCart> {
 

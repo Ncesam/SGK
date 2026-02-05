@@ -2,6 +2,7 @@ package com.ncesam.sgk2026.data.repositories
 
 import com.ncesam.sgk2026.data.mapper.toDomain
 import com.ncesam.sgk2026.data.remote.BookingApi
+import com.ncesam.sgk2026.data.remote.dto.BookingBody
 import com.ncesam.sgk2026.data.remote.utils.safeApiCall
 import com.ncesam.sgk2026.domain.models.Booking
 import com.ncesam.sgk2026.domain.models.BookingForm
@@ -16,14 +17,18 @@ class BookingRepositoryImpl(
 	private val tokenManager: TokenManager,
 	private val userSettingsRepository: UserSettingsRepository
 ) : BookingRepository {
-	override suspend fun bookHotel(form: BookingForm): Result<Booking> {
+	override suspend fun bookHotel(booking: BookingForm): Result<Booking> {
 		val token = tokenManager.getValidToken()
 		if (token.isNullOrBlank()) {
 			return Result.failure(IllegalArgumentException("Token are empty"))
 		}
+		val userId = userSettingsRepository.userIdFlow.first()
+		if (userId.isNullOrBlank()) {
+			return Result.failure(IllegalArgumentException("User are empty"))
+		}
 		return safeApiCall(
 			call = {
-				bookingApi.addBooking(token, form)
+				bookingApi.addBooking(token, BookingBody(userId, booking.hotelId, booking.dateFrom, booking.dateTo, booking.phone, booking.nameBooker))
 			},
 			mapper = { body -> body.toDomain() }
 		)

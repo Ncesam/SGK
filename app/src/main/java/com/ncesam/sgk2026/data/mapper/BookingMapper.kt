@@ -7,15 +7,13 @@ import java.time.LocalDate
 
 
 fun BookingDto.toDomain(): Booking {
-	val dateFromDate = LocalDate.parse(dateFrom, PocketBaseFormatter)
-	val dateToDate = LocalDate.parse(dateTo, PocketBaseFormatter)
 	return Booking(
 		id = id,
 		hotelId = hotel,
-		userId = user,
-		dateFrom = dateFromDate,
-		dateTo = dateToDate,
+		dateFrom = dateFrom,
+		dateTo = dateTo,
 		phone = phone,
 		nameBooker = nameBooked
 	)
 }
+

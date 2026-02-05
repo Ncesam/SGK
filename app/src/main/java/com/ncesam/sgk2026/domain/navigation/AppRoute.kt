@@ -15,7 +15,7 @@ sealed interface AppRoute {
 	}
 
 	@Serializable
-	object Search : AppRoute {
+	data class Search(val value: String) : AppRoute {
 		override val routeId: String
 			get() = "search"
 	}

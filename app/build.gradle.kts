@@ -50,6 +50,7 @@ dependencies {
 	implementation(libs.kotlinx.serialization.json)
 	implementation(libs.retrofit2.kotlinx.serialization.converter)
 
+	implementation(libs.androidx.room.runtime)
 
 	// Koin
 	implementation(platform(libs.koin.bom))

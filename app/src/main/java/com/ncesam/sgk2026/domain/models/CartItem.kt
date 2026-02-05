@@ -1,10 +1,11 @@
 package com.ncesam.sgk2026.domain.models
 
-data class Booking(
-	val id: String,
-	val hotelId: String,
+
+data class CartItem(
+	val quantity: Int,
 	val dateFrom: String,
 	val dateTo: String,
+	val nameBooked: String,
 	val phone: String,
-	val nameBooker: String,
+	val hotelId: String,
 )

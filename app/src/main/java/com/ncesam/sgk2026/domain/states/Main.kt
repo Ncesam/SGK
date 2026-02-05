@@ -16,10 +16,17 @@ data class MainState(
 
 sealed interface MainEvent {
 	data class SearchChanged(val value: String) : MainEvent
-	data class SelectedCategoryChanged(val value: String): MainEvent
-	data class AddToCart(val id: String): MainEvent
+	data class SelectedCategoryChanged(val value: String) : MainEvent
+	data class AddToCart(val id: String) : MainEvent
 	data class ViewHotel(val id: String) : MainEvent
 	data class GoToSearch(val value: String) : MainEvent
 	object Profile : MainEvent
 }
 
+sealed interface MainEffect {
+	data class ShowSnackBar(val msg: String) : MainEffect
+	data class GoToBooking(val hotelId: String) : MainEffect
+	data class GoToSearch(val value: String) : MainEffect
+	object GoToProfile : MainEffect
+
+}

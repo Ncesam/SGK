@@ -1,7 +1,7 @@
 package com.ncesam.sgk2026.data.remote
 
+import com.ncesam.sgk2026.data.remote.dto.BookingBody
 import com.ncesam.sgk2026.data.remote.dto.BookingDto
-import com.ncesam.sgk2026.domain.models.BookingForm
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -13,7 +13,7 @@ interface BookingApi {
 	@POST("/api/collections/booking/records")
 	suspend fun addBooking(
 		@Header("Authorization") token: String,
-		@Body booking: BookingForm
+		@Body booking: BookingBody
 	): Response<BookingDto>
 
 	@GET("/api/collections/booking/records")
